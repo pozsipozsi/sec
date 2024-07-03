@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gratuity Sum</title>
+</head>
+<body>
+    <h1>Calculate Gratuity Sum</h1>
+    <form method="POST">
+        <label for="date_from">Date From:</label>
+        <input type="date" id="date_from" name="date_from" required><br>
+        
+        <label for="date_to">Date To:</label>
+        <input type="date" id="date_to" name="date_to" required><br>
+        
+        <label for="state">State:</label>
+        <input type="number" id="state" name="state" required><br>
+        
+        <button type="submit">Calculate</button>
+    </form>
+    
+    {% if gratuity_total is not none %}
+        <h2>Total Gratuity: {{ gratuity_total }}</h2>
+    {% endif %}
+    {% if gratuity_11 is not none %}
+        <h2>Total Etterem: {{ gratuity_11 }}</h2>
+    {% endif %}
+    {% if gratuity_14 is not none %}
+        <h2>Total Telefon: {{ gratuity_14 }}</h2>
+    {% endif %}
+    {% if gratuity_12 is not none %}
+        <h2>Total Web: {{ gratuity_12 }}</h2>
+    {% endif %}
+    {% if gratuity_12_14_sum is not none %}
+        <h2>Total Tel + Web: {{ gratuity_12_14_sum}}</h2>
+    {% endif %}
+    {% if gratuity_12_14_11_sum is not none %}
+        <h2>Total Etterem + Tel + Web: {{ gratuity_12_14_11_sum}}</h2>
+    {% endif %}
+    {% if list_11 is not none %}
+        <h2>Felszolg: {{ list_11 }}</h2>
+    {% endif %}
+    {% if list_12_14 is not none %}
+        <h2>Futar: {{ list_12_14 }}</h2>
+    {% endif %}
+    {% if users is not none %}
+        <h2>Users: {{ users }}</h2>
+    {% endif %}
+    <p>########################################################################################</p>
+    <p>################## Innentöl a lényeges a fentiek csak adatok a matekhoz ################</p>
+    <p>########################################################################################</p>
+    {% if date_from is not none %}
+        <h1>Date From: {{ date_from }}</h1>
+    {% endif %}
+    {% if date_to is not none %}
+        <h1>Date To: {{ date_to }}</h1>
+    {% endif %}
+    
+    {% if gratuity_12_14_11_sum is not none %}
+        <h2>Összesitett napi értékesítés: {{ '{:,.0f}'.format(gratuity_12_14_11_sum) }} HUF</h2>
+    {% endif %}
+    <h2>Éttermi értékesítés</h2>
+    <p>Összesen: {{ '{:,.0f}'.format(list_11['total']) }} HUF</p>
+    <h3>Felhasználónkénti bontásban:</h3>
+    <ul>
+        {% for user in list_11['user_grouped_sum'] %}
+            <li>{{ user['user_name'][0][1] }}, >> {{ '{:,.0f}'.format(user['total_gratuity_sum']) }} HUF</li>
+        {% endfor %}
+    </ul>
+    <h2>Külsö értékesítés</h2>
+    <p>Összesen: {{ '{:,.0f}'.format(list_12_14['total']) }} HUF</p>
+    <ul>
+        <li>Telefon: {{ '{:,.0f}'.format(gratuity_14) }} HUF</li>
+        <li>Web: {{ '{:,.0f}'.format(gratuity_12) }} HUF</li>
+    </ul>
+    <h3>Futáronkénti bontásban:</h3>
+    <ul>
+        {% for user in list_12_14['user_grouped_sum'] %}
+            <li>{{ user['courier_name'][0][1] }}, >> {{ '{:,.0f}'.format(user['total_gratuity_sum']) }} HUF</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
